@@ -6,41 +6,21 @@
     <title>Safety Portal - Veerka Beverages</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Safety Green Theme */
         :root { 
             --safety-green: #2d7a32; 
-            --safety-light-green: #e8f5e9;
             --dark-green: #1b5e20;
         }
-        body { background-color: #f0f4f1; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        
-        /* Company Header */
-        .company-header {
-            background-color: white;
-            padding: 15px;
-            border-bottom: 4px solid var(--safety-green);
-            margin-bottom: 20px;
-        }
+        body { background-color: #f0f4f1; font-family: 'Segoe UI', sans-serif; }
+        .company-header { background-color: white; padding: 15px; border-bottom: 4px solid var(--safety-green); margin-bottom: 20px; }
         .company-name { color: var(--dark-green); font-weight: 800; margin: 0; }
-        .company-address { color: #666; font-size: 0.9rem; margin: 0; }
-
         .login-box { max-width: 400px; margin: 50px auto; border-top: 5px solid var(--safety-green); }
         .main-content { display: none; margin-top: 20px; }
-        
-        .hero-banner { 
-            background: var(--safety-green); 
-            color: white; 
-            padding: 25px; 
-            border-radius: 12px; 
-            margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        
-        .btn-safety { background-color: var(--safety-green); color: white; border: none; }
+        .hero-banner { background: var(--safety-green); color: white; padding: 25px; border-radius: 12px; margin-bottom: 30px; }
+        .btn-safety { background-color: var(--safety-green); color: white; border: none; font-weight: bold; }
         .btn-safety:hover { background-color: var(--dark-green); color: white; }
-        
-        .card { border-radius: 12px; border: none; }
+        .card { border-radius: 12px; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .section-title { color: var(--dark-green); border-left: 5px solid var(--safety-green); padding-left: 10px; margin-bottom: 20px; }
+        iframe { width: 100%; height: 350px; border: none; border-radius: 8px; }
     </style>
 </head>
 <body>
@@ -53,7 +33,6 @@
 <div class="container">
     <div id="loginArea" class="card login-box shadow p-4">
         <h4 class="text-center mb-4">Employee Access Portal</h4>
-        <div class="mb-3 text-center text-muted small">Please enter the safety access code</div>
         <input type="password" id="adminPass" class="form-control mb-3 text-center" placeholder="Access Code">
         <button onclick="checkLogin()" class="btn btn-safety w-100">Enter Site</button>
         <p id="loginError" class="text-danger mt-3 text-center" style="display:none;">⚠️ Invalid Access Code!</p>
@@ -81,25 +60,25 @@
 
                         <div class="mb-3">
                             <label class="form-label fw-bold">Location / Area</label>
-                            <input type="text" name="location" class="form-control" placeholder="e.g. Bottling Plant, Loading Area" required>
+                            <input type="text" name="location" class="form-control" placeholder="e.g. Bottling Line, Warehouse" required>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label fw-bold">Description</label>
-                            <textarea name="description" class="form-control" rows="3" placeholder="Explain what happened..." required></textarea>
+                            <textarea name="description" class="form-control" rows="3" placeholder="Describe the situation..." required></textarea>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label fw-bold">Reported By</label>
-                            <input type="text" name="reportedBy" class="form-control" placeholder="Your Name" required>
+                            <input type="text" name="reportedBy" class="form-control" placeholder="Your Full Name" required>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label fw-bold">Upload Evidence (Photo)</label>
-                            <input type="file" name="myFile" class="form-control" accept="image/*">
+                            <input type="file" id="myFile" name="myFile" class="form-control" accept="image/*">
                         </div>
 
-                        <button type="button" onclick="submitData(this.form)" class="btn btn-safety w-100 mt-3 py-2 fw-bold">SUBMIT TO SAFETY TEAM</button>
+                        <button type="button" onclick="submitToGoogle(this.form)" class="btn btn-safety w-100 mt-3 py-2 fw-bold">SUBMIT REPORT</button>
                     </form>
                     <div id="status" class="mt-3 text-center fw-bold"></div>
                 </div>
@@ -107,19 +86,17 @@
 
             <div class="col-lg-6">
                 <div class="card shadow p-4 h-100">
-                    <h4 class="section-title">Safety Analytics</h4>
-                    <div class="alert alert-success py-2">Real-time Dashboard</div>
+                    <h4 class="section-title">Safety Dashboard</h4>
+                    <div class="alert alert-success py-2 small">Real-time Analytics from Google Sheet</div>
                     
-                    <div class="text-center p-5 border border-dashed rounded mb-4" style="background:#f9f9f9;">
-                        <p class="text-muted">Live Chart will appear here</p>
-                        <small>(Connect your Google Sheet Chart here)</small>
+                    <div class="mb-4">
+                        <iframe src="https://docs.google.com/spreadsheets/d/16JlVCtAYheXbCfktbMOg1cF1pskRiHZqJhdXC98JSMw/edit?usp=sharing"></iframe>
                     </div>
 
                     <div class="d-grid gap-2">
                         <a href="https://docs.google.com/spreadsheets/d/16JlVCtAYheXbCfktbMOg1cF1pskRiHZqJhdXC98JSMw/edit?usp=sharing" target="_blank" class="btn btn-outline-success">
-                            Open Master Excel Sheet
+                            📊 View All Data (Master Excel)
                         </a>
-                        <button class="btn btn-light btn-sm text-muted">Weekly Safety Reports (PDF)</button>
                     </div>
                 </div>
             </div>
@@ -128,11 +105,9 @@
 </div>
 
 <script>
-    // Login Logic
     function checkLogin() {
         const pass = document.getElementById('adminPass').value;
-        if(pass === "SAFETY123") { // Apne hisab se change kar sakte hain
-            document.getElementById('loginArea').classList.remove('d-block');
+        if(pass === "SAFETY123") {
             document.getElementById('loginArea').style.display = 'none';
             document.getElementById('mainSite').style.display = 'block';
         } else {
@@ -140,19 +115,57 @@
         }
     }
 
-    function submitData(form) {
+    function submitToGoogle(form) {
         const status = document.getElementById('status');
-        status.innerHTML = "Processing... Please wait.";
-        status.style.color = "#2d7a32";
+        status.innerHTML = "⏳ Submitting to Veerka Database...";
+        status.style.color = "blue";
 
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwUw-G__CNb8BETESfYpkvoXPRW0hwFahNZcQ29lmkMFE1YMoRTthWl20gRTwuVuC_V/exec';
         
-        // This is a placeholder for the fetch call
-        // Make sure to set up your Google Apps Script as discussed before
-        setTimeout(() => {
-            status.innerHTML = "✅ Success! Data sent to Google Sheet.";
-            form.reset();
-        }, 2000);
+        // Handling the file and data
+        const fileInput = document.getElementById('myFile');
+        const file = fileInput.files[0];
+        
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const blob = e.target.result.split(',')[1];
+                sendData(blob, file.name, file.type);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            sendData(null, null, null);
+        }
+
+        function sendData(blob, fileName, fileType) {
+            const formData = {
+                date: new Date().toLocaleString(),
+                reportType: form.reportType.value,
+                location: form.location.value,
+                description: form.description.value,
+                reportedBy: form.reportedBy.value,
+                imageBlob: blob,
+                imageName: fileName,
+                imageType: fileType
+            };
+
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors', // Important for Apps Script
+                cache: 'no-cache',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(() => {
+                status.innerHTML = "✅ Report Submitted Successfully!";
+                status.style.color = "green";
+                form.reset();
+            })
+            .catch(error => {
+                status.innerHTML = "❌ Error in submission.";
+                status.style.color = "red";
+            });
+        }
     }
 </script>
 
