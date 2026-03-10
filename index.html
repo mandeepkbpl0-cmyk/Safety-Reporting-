@@ -1,108 +1,79 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Safety Management System</title>
+    <meta charset="UTF-8">
+    <title>Safety Access Portal - Veerka Beverages</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        :root { --safety-red: #d9534f; --safety-blue: #0275d8; }
-        body { background-color: #f4f7f6; }
-        .login-box { max-width: 400px; margin: 100px auto; display: block; }
-        .main-content { display: none; margin-top: 30px; }
-        .header-banner { background: var(--safety-red); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+        :root { --safety-green: #2d7a32; --dark-green: #1b5e20; }
+        body { background-color: #f0f4f1; }
+        .header { background: white; border-bottom: 4px solid var(--safety-green); padding: 15px; margin-bottom: 20px; }
+        .access-box { max-width: 450px; margin: 80px auto; border-radius: 15px; border-top: 6px solid var(--safety-green); }
+        #reportingSection { display: none; } /* Hidden by default */
+        .btn-green { background: var(--safety-green); color: white; font-weight: bold; }
+        .btn-green:hover { background: var(--dark-green); color: white; }
     </style>
 </head>
 <body>
 
+<div class="header text-center shadow-sm">
+    <h2 style="color: var(--dark-green); font-weight: 800;">VEERKA BEVERAGES PRIVATE LIMITED</h2>
+    <p class="text-muted mb-0">Goindwal Sahib | Safety Management System</p>
+</div>
+
 <div class="container">
-    <div id="loginArea" class="card login-box shadow p-4">
-        <h3 class="text-center mb-4">Safety Portal Login</h3>
-        <input type="password" id="adminPass" class="form-control mb-3" placeholder="Enter Employee Access Code">
-        <button onclick="checkLogin()" class="btn btn-primary w-100">Login</button>
-        <p id="loginError" class="text-danger mt-2" style="display:none;">Wrong Access Code!</p>
+    <div id="accessSection" class="card access-box shadow-lg p-4">
+        <div class="text-center mb-4">
+            <img src="https://cdn-icons-png.flaticon.com/512/2550/2550260.png" width="60">
+            <h4 class="mt-3">Employee Verification</h4>
+            <p class="small text-muted">Reporting shuru karne ke liye apni ID enter karein</p>
+        </div>
+        <div class="mb-3">
+            <input type="text" id="empID" class="form-control form-control-lg text-center" placeholder="e.g. VEERKA-101">
+        </div>
+        <button onclick="verifyAccess()" class="btn btn-green w-100 py-2">VERIFY & PROCEED</button>
+        <div id="errorMsg" class="text-danger mt-3 text-center" style="display:none;">❌ Invalid ID! Please contact Safety Dept.</div>
     </div>
 
-    <div id="mainSite" class="main-content">
-        <div class="header-banner text-center shadow">
-            <h1>SAFETY FIRST / ਸੁਰੱਖਿਆ ਪਹਿਲਾਂ</h1>
-            <p>Zero Harm - Report Every Near Miss & Unsafe Condition</p>
+    <div id="reportingSection" class="mt-4">
+        <div class="alert alert-success text-center">
+            <strong>Access Granted!</strong> Aap report submit kar sakte hain.
         </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card shadow p-4">
-                    <h4>📝 New Incident Report</h4>
-                    <form id="reportForm">
-                        <label class="mt-2">Type</label>
-                        <select name="reportType" class="form-select" required>
-                            <option value="Unsafe Act">Unsafe Act</option>
-                            <option value="Unsafe Condition">Unsafe Condition</option>
-                            <option value="Near Miss">Near Miss</option>
-                        </select>
-
-                        <label class="mt-2">Location</label>
-                        <input type="text" name="location" class="form-control" placeholder="e.g. Line 2, Gate 4" required>
-
-                        <label class="mt-2">Description</label>
-                        <textarea name="description" class="form-control" rows="3" required></textarea>
-
-                        <label class="mt-2">Reported By (Name/ID)</label>
-                        <input type="text" name="reportedBy" class="form-control" required>
-
-                        <label class="mt-2">Upload Photo</label>
-                        <input type="file" name="myFile" class="form-control">
-
-                        <button type="button" onclick="submitData(this.form)" class="btn btn-danger w-100 mt-4">Submit Report</button>
-                    </form>
-                    <div id="status" class="mt-3 text-center fw-bold"></div>
+        <div class="card shadow p-4 mx-auto" style="max-width: 700px;">
+            <h4 class="text-success border-bottom pb-2">New Incident Report</h4>
+            <form id="actualForm">
+                <div class="mb-3 mt-3">
+                    <label class="fw-bold">Report Type</label>
+                    <select class="form-select" name="type">
+                        <option>Unsafe Act</option>
+                        <option>Unsafe Condition</option>
+                        <option>Near Miss</option>
+                    </select>
                 </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="card shadow p-4 text-center">
-                    <h4>📊 Live Safety Dashboard</h4>
-                    <p>Dashboard updates every 5 minutes.</p>
-                    <div class="bg-light p-5 border">Chart Preview Area</div>
-                    <a href="https://docs.google.com/spreadsheets/d/16JlVCtAYheXbCfktbMOg1cF1pskRiHZqJhdXC98JSMw/edit?usp=sharing" target="_blank" class="btn btn-outline-primary mt-4">View Full Excel Report</a>
+                <div class="mb-3">
+                    <label class="fw-bold">Description</label>
+                    <textarea class="form-control" rows="3" name="desc" placeholder="Details likhein..."></textarea>
                 </div>
-            </div>
+                <button type="button" class="btn btn-green w-100 py-2 mt-3">SUBMIT REPORT</button>
+            </form>
         </div>
     </div>
 </div>
 
 <script>
-    // Simple Admin Access Logic
-    function checkLogin() {
-        const pass = document.getElementById('adminPass').value;
-        if(pass === "SAFETY123") { // Aap apna code set kar sakte ho
-            document.getElementById('loginArea').style.display = 'none';
-            document.getElementById('mainSite').style.display = 'block';
+    function verifyAccess() {
+        const idInput = document.getElementById('empID').value.trim().toUpperCase();
+        
+        // Yahan aap apni company ke IDs ki list ya pattern check kar sakte hain
+        // Example: Agar ID 'VEERKA' se shuru hoti hai toh access de do
+        if(idInput.startsWith("VEERKA-") || idInput === "ADMIN786") {
+            document.getElementById('accessSection').style.display = 'none';
+            document.getElementById('reportingSection').style.display = 'block';
         } else {
-            document.getElementById('loginError').style.display = 'block';
+            const error = document.getElementById('errorMsg');
+            error.style.display = 'block';
+            setTimeout(() => { error.style.display = 'none'; }, 3000);
         }
-    }
-
-    function submitData(form) {
-        const status = document.getElementById('status');
-        status.innerHTML = "Uploading... Please wait.";
-        status.style.color = "orange";
-
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbwUw-G__CNb8BETESfYpkvoXPRW0hwFahNZcQ29lmkMFE1YMoRTthWl20gRTwuVuC_V/exec';
-        
-        // Note: Apps Script ke sath File upload handle karne ke liye 
-        // hume reader use karna padta hai, ye basic example hai.
-        const formData = new FormData(form);
-        
-        // For simplicity in this HTML, we link the direct Script URL
-        fetch(scriptURL, { method: 'POST', body: formData})
-          .then(response => {
-              status.innerHTML = "Report Submitted Successfully!";
-              status.style.color = "green";
-              form.reset();
-          })
-          .catch(error => {
-              status.innerHTML = "Error! Connection Failed.";
-              status.style.color = "red";
-          });
     }
 </script>
 
