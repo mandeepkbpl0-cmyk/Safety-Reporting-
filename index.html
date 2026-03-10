@@ -2,78 +2,157 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Safety Access Portal - Veerka Beverages</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safety Portal - Veerka Beverages</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        :root { --safety-green: #2d7a32; --dark-green: #1b5e20; }
-        body { background-color: #f0f4f1; }
-        .header { background: white; border-bottom: 4px solid var(--safety-green); padding: 15px; margin-bottom: 20px; }
-        .access-box { max-width: 450px; margin: 80px auto; border-radius: 15px; border-top: 6px solid var(--safety-green); }
-        #reportingSection { display: none; } /* Hidden by default */
-        .btn-green { background: var(--safety-green); color: white; font-weight: bold; }
-        .btn-green:hover { background: var(--dark-green); color: white; }
+        /* Safety Green Theme */
+        :root { 
+            --safety-green: #2d7a32; 
+            --safety-light-green: #e8f5e9;
+            --dark-green: #1b5e20;
+        }
+        body { background-color: #f0f4f1; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        /* Company Header */
+        .company-header {
+            background-color: white;
+            padding: 15px;
+            border-bottom: 4px solid var(--safety-green);
+            margin-bottom: 20px;
+        }
+        .company-name { color: var(--dark-green); font-weight: 800; margin: 0; }
+        .company-address { color: #666; font-size: 0.9rem; margin: 0; }
+
+        .login-box { max-width: 400px; margin: 50px auto; border-top: 5px solid var(--safety-green); }
+        .main-content { display: none; margin-top: 20px; }
+        
+        .hero-banner { 
+            background: var(--safety-green); 
+            color: white; 
+            padding: 25px; 
+            border-radius: 12px; 
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn-safety { background-color: var(--safety-green); color: white; border: none; }
+        .btn-safety:hover { background-color: var(--dark-green); color: white; }
+        
+        .card { border-radius: 12px; border: none; }
+        .section-title { color: var(--dark-green); border-left: 5px solid var(--safety-green); padding-left: 10px; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
-<div class="header text-center shadow-sm">
-    <h2 style="color: var(--dark-green); font-weight: 800;">VEERKA BEVERAGES PRIVATE LIMITED</h2>
-    <p class="text-muted mb-0">Goindwal Sahib | Safety Management System</p>
+<div class="company-header text-center shadow-sm">
+    <h2 class="company-name">VEERKA BEVERAGES PRIVATE LIMITED</h2>
+    <p class="company-address">Goindwal Sahib, Punjab | Safety Management System</p>
 </div>
 
 <div class="container">
-    <div id="accessSection" class="card access-box shadow-lg p-4">
-        <div class="text-center mb-4">
-            <img src="https://cdn-icons-png.flaticon.com/512/2550/2550260.png" width="60">
-            <h4 class="mt-3">Employee Verification</h4>
-            <p class="small text-muted">Reporting shuru karne ke liye apni ID enter karein</p>
-        </div>
-        <div class="mb-3">
-            <input type="text" id="empID" class="form-control form-control-lg text-center" placeholder="e.g. VEERKA-101">
-        </div>
-        <button onclick="verifyAccess()" class="btn btn-green w-100 py-2">VERIFY & PROCEED</button>
-        <div id="errorMsg" class="text-danger mt-3 text-center" style="display:none;">❌ Invalid ID! Please contact Safety Dept.</div>
+    <div id="loginArea" class="card login-box shadow p-4">
+        <h4 class="text-center mb-4">Employee Access Portal</h4>
+        <div class="mb-3 text-center text-muted small">Please enter the safety access code</div>
+        <input type="password" id="adminPass" class="form-control mb-3 text-center" placeholder="Access Code">
+        <button onclick="checkLogin()" class="btn btn-safety w-100">Enter Site</button>
+        <p id="loginError" class="text-danger mt-3 text-center" style="display:none;">⚠️ Invalid Access Code!</p>
     </div>
 
-    <div id="reportingSection" class="mt-4">
-        <div class="alert alert-success text-center">
-            <strong>Access Granted!</strong> Aap report submit kar sakte hain.
+    <div id="mainSite" class="main-content">
+        <div class="hero-banner text-center">
+            <h1>SAFETY FIRST / ਸੁਰੱਖਿਆ ਪਹਿਲਾਂ</h1>
+            <p class="mb-0">"Mind on the job, safety in the palm"</p>
         </div>
-        <div class="card shadow p-4 mx-auto" style="max-width: 700px;">
-            <h4 class="text-success border-bottom pb-2">New Incident Report</h4>
-            <form id="actualForm">
-                <div class="mb-3 mt-3">
-                    <label class="fw-bold">Report Type</label>
-                    <select class="form-select" name="type">
-                        <option>Unsafe Act</option>
-                        <option>Unsafe Condition</option>
-                        <option>Near Miss</option>
-                    </select>
+
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card shadow p-4">
+                    <h4 class="section-title">New Report / ਨਵੀਂ ਰਿਪੋਰਟ</h4>
+                    <form id="reportForm">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Incident Type</label>
+                            <select name="reportType" class="form-select" required>
+                                <option value="Unsafe Act">Unsafe Act (ਗਲਤ ਤਰੀਕਾ)</option>
+                                <option value="Unsafe Condition">Unsafe Condition (ਅਸੁਰੱਖਿਅਤ ਹਾਲਤ)</option>
+                                <option value="Near Miss">Near Miss (ਬਚਾਅ ਹੋ ਗਿਆ)</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Location / Area</label>
+                            <input type="text" name="location" class="form-control" placeholder="e.g. Bottling Plant, Loading Area" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Description</label>
+                            <textarea name="description" class="form-control" rows="3" placeholder="Explain what happened..." required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Reported By</label>
+                            <input type="text" name="reportedBy" class="form-control" placeholder="Your Name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Upload Evidence (Photo)</label>
+                            <input type="file" name="myFile" class="form-control" accept="image/*">
+                        </div>
+
+                        <button type="button" onclick="submitData(this.form)" class="btn btn-safety w-100 mt-3 py-2 fw-bold">SUBMIT TO SAFETY TEAM</button>
+                    </form>
+                    <div id="status" class="mt-3 text-center fw-bold"></div>
                 </div>
-                <div class="mb-3">
-                    <label class="fw-bold">Description</label>
-                    <textarea class="form-control" rows="3" name="desc" placeholder="Details likhein..."></textarea>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card shadow p-4 h-100">
+                    <h4 class="section-title">Safety Analytics</h4>
+                    <div class="alert alert-success py-2">Real-time Dashboard</div>
+                    
+                    <div class="text-center p-5 border border-dashed rounded mb-4" style="background:#f9f9f9;">
+                        <p class="text-muted">Live Chart will appear here</p>
+                        <small>(Connect your Google Sheet Chart here)</small>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <a href="https://docs.google.com/spreadsheets/d/16JlVCtAYheXbCfktbMOg1cF1pskRiHZqJhdXC98JSMw/edit?usp=sharing" target="_blank" class="btn btn-outline-success">
+                            Open Master Excel Sheet
+                        </a>
+                        <button class="btn btn-light btn-sm text-muted">Weekly Safety Reports (PDF)</button>
+                    </div>
                 </div>
-                <button type="button" class="btn btn-green w-100 py-2 mt-3">SUBMIT REPORT</button>
-            </form>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-    function verifyAccess() {
-        const idInput = document.getElementById('empID').value.trim().toUpperCase();
-        
-        // Yahan aap apni company ke IDs ki list ya pattern check kar sakte hain
-        // Example: Agar ID 'VEERKA' se shuru hoti hai toh access de do
-        if(idInput.startsWith("VEERKA-") || idInput === "ADMIN786") {
-            document.getElementById('accessSection').style.display = 'none';
-            document.getElementById('reportingSection').style.display = 'block';
+    // Login Logic
+    function checkLogin() {
+        const pass = document.getElementById('adminPass').value;
+        if(pass === "SAFETY123") { // Apne hisab se change kar sakte hain
+            document.getElementById('loginArea').classList.remove('d-block');
+            document.getElementById('loginArea').style.display = 'none';
+            document.getElementById('mainSite').style.display = 'block';
         } else {
-            const error = document.getElementById('errorMsg');
-            error.style.display = 'block';
-            setTimeout(() => { error.style.display = 'none'; }, 3000);
+            document.getElementById('loginError').style.display = 'block';
         }
+    }
+
+    function submitData(form) {
+        const status = document.getElementById('status');
+        status.innerHTML = "Processing... Please wait.";
+        status.style.color = "#2d7a32";
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwUw-G__CNb8BETESfYpkvoXPRW0hwFahNZcQ29lmkMFE1YMoRTthWl20gRTwuVuC_V/exec';
+        
+        // This is a placeholder for the fetch call
+        // Make sure to set up your Google Apps Script as discussed before
+        setTimeout(() => {
+            status.innerHTML = "✅ Success! Data sent to Google Sheet.";
+            form.reset();
+        }, 2000);
     }
 </script>
 
